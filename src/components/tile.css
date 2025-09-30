@@ -1,0 +1,61 @@
+.tile {
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(145deg, #ffffff, #e3edf7);
+  box-shadow: 0 8px 16px rgba(15, 52, 96, 0.15);
+  color: #0b4f6c;
+  min-height: 72px;
+  font-size: 1.5rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  touch-action: manipulation;
+}
+
+.tile:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 22px rgba(15, 52, 96, 0.18);
+}
+
+.tile.selected {
+  background: linear-gradient(145deg, #ffe8d6, #ffd5b5);
+  color: #802b00;
+}
+
+.tile.last {
+  outline: 4px solid #ff7f50;
+}
+
+.tile.negative {
+  color: #c81d25;
+}
+
+.tile.bonus {
+  background: linear-gradient(145deg, #daf7dc, #b3f2be);
+  color: #0c5b2e;
+}
+
+.tile.locked {
+  background: #d4d8dd;
+  color: #4b5563;
+  box-shadow: inset 0 0 0 2px rgba(75, 85, 99, 0.2);
+}
+
+.tile .multiplier {
+  position: absolute;
+  bottom: 8px;
+  right: 12px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: inherit;
+}
+
+@media (max-width: 640px) {
+  .tile {
+    min-height: 60px;
+    font-size: 1.2rem;
+  }
+}
