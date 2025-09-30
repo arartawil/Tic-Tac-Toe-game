@@ -58,28 +58,35 @@ function valueBounds(features) {
 function generateSolutionNumbers(pathLength, levelConfig) {
   const { min, max } = valueBounds(levelConfig.features);
   const [targetMin, targetMax] = levelConfig.targetRange;
+
   for (let attempt = 0; attempt < MAX_ATTEMPTS; attempt += 1) {
+    const target = randomInt(targetMin, targetMax);
     const numbers = [];
-    let runningSum = 0;
-    for (let i = 0; i < pathLength - 1; i += 1) {
-      const value = randomInt(min, max);
+    let remaining = target;
+    let valid = true;
+
+    for (let index = 0; index < pathLength; index += 1) {
+      const slotsLeft = pathLength - index;
+      const minPossible = min * (slotsLeft - 1);
+      const maxPossible = max * (slotsLeft - 1);
+      const low = Math.max(min, remaining - maxPossible);
+      const high = Math.min(max, remaining - minPossible);
+
+      if (low > high) {
+        valid = false;
+        break;
+      }
+
+      const value = index === pathLength - 1 ? remaining : randomInt(low, high);
       numbers.push(value);
-      runningSum += value;
+      remaining -= value;
     }
-    const remainingMin = targetMin - runningSum;
-    const remainingMax = targetMax - runningSum;
-    const finalMin = Math.max(min, remainingMin);
-    const finalMax = Math.min(max, remainingMax);
-    if (finalMin > finalMax) {
-      continue;
-    }
-    const finalValue = randomInt(finalMin, finalMax);
-    numbers.push(finalValue);
-    const total = runningSum + finalValue;
-    if (total >= targetMin && total <= targetMax) {
-      return { numbers, target: total };
+
+    if (valid && remaining === 0) {
+      return { numbers, target };
     }
   }
+
   throw new Error('Failed to generate solution numbers');
 }
 
